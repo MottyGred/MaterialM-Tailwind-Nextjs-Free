@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
 import { Icon } from '@iconify/react'
 import Profile from './Profile'
-import Link from 'next/link'
 import Notifications from './Notifications'
 import SidebarLayout from '../sidebar/Sidebar'
 import FullLogo from '../shared/logo/FullLogo'
@@ -14,133 +13,96 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const Header = () => {
   const { theme, setTheme } = useTheme()
-  const [isSticky, setIsSticky] = useState(false)
-  const [mobileMenu, setMobileMenu] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsSticky(true)
-      } else {
-        setIsSticky(false)
-      }
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const toggleMode = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'))
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
   return (
     <>
+      {/* ── Branded Top Bar ── */}
       <header
-        className={`sticky top-0 xl:top-[68px] z-2 ${
-          isSticky ? 'bg-background shadow-md fixed w-full' : 'bg-transparent'
-        }`}>
-        <nav
-          className={`rounded-none  py-4 sm:ps-6 max-w-full! sm:pe-10 dark:bg-dark flex justify-between items-center px-6`}>
-          {/* Mobile Toggle Icon */}
-          <div
-            onClick={() => {
-              setIsOpen(true)
-            }}
-            className='px-3.5 hover:text-primary dark:hover:text-primary text-link dark:text-darklink relative after:absolute after:w-10 after:h-10 after:rounded-full hover:after:bg-lightprimary  after:bg-transparent rounded-full xl:hidden flex justify-center items-center cursor-pointer'>
-            <Icon icon='tabler:menu-2' height={20} width={20} />
-          </div>
+        className={`sticky top-0 z-30 transition-shadow duration-200 ${
+          isScrolled ? 'shadow-lg' : 'shadow-sm'
+        }`}
+        style={{ backgroundColor: '#1E3A5F' }}
+      >
+        {/* Thin accent stripe */}
+        <div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, #D4A017 0%, #C8541A 50%, #4A7C3F 100%)' }} />
 
-          <div className='block xl:hidden'>
+        <nav className="flex items-center justify-between px-5 py-2.5">
+
+          {/* ── LEFT: Mobile menu + Logo (mobile only) ── */}
+          <div className="flex items-center gap-3 xl:hidden">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Icon icon="tabler:menu-2" height={20} />
+            </button>
             <FullLogo />
           </div>
 
-          <div className='flex xl:hidden items-center'>
-            <div
-              className='hover:text-primary px-2 md:px-15 group focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-gray relative'
-              onClick={toggleMode}>
-              <span className='flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2   group-hover:after:bg-lightprimary'>
-                {theme === 'light' ? (
-                  <Icon icon='tabler:moon' width='20' />
-                ) : (
-                  <Icon
-                    icon='solar:sun-bold-duotone'
-                    width='20'
-                    className='group-hover:text-primary'
-                  />
-                )}
-              </span>
+          {/* ── LEFT: Search bar (desktop) ── */}
+          <div className="hidden xl:flex items-center gap-3 flex-1 max-w-xs">
+            <div className="relative w-full">
+              <Icon
+                icon="solar:magnifer-linear"
+                width={16}
+                height={16}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50"
+              />
+              <input
+                type="text"
+                placeholder="Buscar en el sistema..."
+                className="w-full rounded-xl pl-9 pr-4 py-2 text-sm text-white placeholder-white/40 outline-none focus:ring-2 focus:ring-white/20 transition-all"
+                style={{ backgroundColor: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.15)' }}
+              />
             </div>
-
-            <div className='xl:block '>
-              <div className='flex gap-0 items-center relative'>
-                {/* Chat */}
-                <Notifications />
-              </div>
-            </div>
-
-            {/* Profile Dropdown */}
-            <Profile />
           </div>
 
-          <div className='hidden xl:flex items-center justify-between w-full'>
-            <div className='flex items-center gap-2'>
-              {/* Search Icon */}
+          {/* ── CENTER: Brand label (desktop only) ── */}
+          <div className="hidden xl:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
+            <span className="text-xs font-medium text-white/40 uppercase tracking-widest">Sistema de Gestión</span>
+            <span className="text-white/20 text-xs">·</span>
+            <span className="text-xs font-bold text-white/70 tracking-wide">Haladás Taller Creativo</span>
+          </div>
 
-              <div className='relative'>
-                <Icon
-                  icon='solar:magnifer-linear'
-                  width={18}
-                  height={18}
-                  className='absolute left-3 top-1/2 -translate-y-1/2'
-                />
-                <Input
-                  type='text'
-                  placeholder='Search...'
-                  className='rounded-xl pl-10'
-                />
-              </div>
+          {/* ── RIGHT: Actions ── */}
+          <div className="flex items-center gap-1">
+
+            {/* Dark / Light toggle */}
+            <button
+              onClick={toggleMode}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+              title={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
+            >
+              {theme === 'light' ? (
+                <Icon icon="tabler:moon" width={18} />
+              ) : (
+                <Icon icon="solar:sun-bold-duotone" width={18} />
+              )}
+            </button>
+
+            {/* Notifications — wrapped to adapt icon color */}
+            <div className="[&_button]:text-white/70 [&_button:hover]:text-white [&_button:hover]:bg-white/10 [&_button]:rounded-xl [&_button]:transition-colors">
+              <Notifications />
             </div>
-            <div className='flex w-full justify-end items-end'>
-              <div className='flex gap-0 items-center '>
-                <div className='relative lg:block hidden group w-fit shadow-grid-shadow bg-[radial-gradient(100%_707.08%_at_0%_0%,#15CEBD_0%,#548AFE_33.82%,#E02FD6_72.12%,#FDB54E_100%)] p-0.5 rounded-full'>
-                  <Link
-                    href={'https://tailwind-admin.com/#pricing'}
-                    className='flex items-center gap-2.5 px-3 py-1.5 bg-background rounded-full transition-all dark:hover:bg-[radial-gradient(100%_707.08%_at_0%_0%,#15CEBD36_0%,#548AFE36_33.82%,#E02FD636_72.12%,#FDB54E36_100%)] group hover:bg-[radial-gradient(100%_707.08%_at_0%_0%,#15CEBD36_0%,#548AFE36_33.82%,#E02FD636_72.12%,#FDB54E36_100%)]'>
-                    <p className='text-base font-semibold'>Check Pro Version</p>
-                  </Link>
-                </div>
 
-                {/* ✅ Dark/Light Toggle */}
-                <div
-                  className='hover:text-primary px-15 group focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-gray relative'
-                  onClick={toggleMode}>
-                  <span className='flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2   group-hover:after:bg-lightprimary'>
-                    {theme === 'light' ? (
-                      <Icon icon='tabler:moon' width='20' />
-                    ) : (
-                      <Icon
-                        icon='solar:sun-bold-duotone'
-                        width='20'
-                        className='group-hover:text-primary'
-                      />
-                    )}
-                  </span>
-                </div>
+            {/* Divider */}
+            <div className="w-px h-6 mx-1" style={{ backgroundColor: 'rgba(255,255,255,0.15)' }} />
 
-                <div className='xl:block '>
-                  <div className='flex gap-0 items-center relative'>
-                    {/* Chat */}
-                    <Notifications />
-                  </div>
-                </div>
-
-                {/* Profile Dropdown */}
-                <Profile />
-              </div>
+            {/* Profile */}
+            <div className="[&_button]:ring-2 [&_button]:ring-white/20 [&_button:hover]:ring-white/40 [&_button]:transition-all">
+              <Profile />
             </div>
           </div>
         </nav>
@@ -148,7 +110,7 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent side='left' className='w-64 p-0'>
+        <SheetContent side="left" className="w-64 p-0">
           <VisuallyHidden>
             <SheetTitle>sidebar</SheetTitle>
           </VisuallyHidden>

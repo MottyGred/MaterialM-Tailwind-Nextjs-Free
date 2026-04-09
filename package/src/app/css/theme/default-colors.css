@@ -1,24 +1,26 @@
 :root {
-  --color-info: #46caeb;
-  --color-success: #00ceb6;
-  --color-warning: #FFB900;
-  --color-error: #FF6692;  
-  --color-darkinfo: #223662;
+  /* === Haladás Brand Palette === */
+  /* Extraída del logo: árbol con hojas de 4 colores */
+  --color-info: #5B8DB8;
+  --color-success: #4A7C3F;        /* Verde bosque (hojas verdes) */
+  --color-warning: #D4A017;        /* Amarillo dorado (hojas doradas) */
+  --color-error: #C8541A;          /* Naranja terracota (hojas naranjas) */
+  --color-darkinfo: #0f2540;
   --color-white: #fff;
-  --color-dark: #111c2d;
-  --color-border: #e0e6eb;
-  --color-darkborder: #333f55;
-  --color-link: #2a3547;
-  --color-muted: #EFF4FA;
-  --color-darkmuted: #2a3851;
-  --color-darklink: #7b8893;
-  --color-lightgray: #F8FAFD;
-  --color-darkgray: #1a2537;
-  --color-bodytext: #EFF4FAbf;
-  --color-primary: #00A1FF;
-  --color-secondary: #16CDC7;
-  --color-input: #e5e7eb;
-  --color-graymuted: #DECFDA;
+  --color-dark: #0f1e30;
+  --color-border: #dde3ea;
+  --color-darkborder: #2a3a52;
+  --color-link: #1E3A5F;
+  --color-muted: #F0F4F8;
+  --color-darkmuted: #253347;
+  --color-darklink: #7b8fa3;
+  --color-lightgray: #F5F8FB;
+  --color-darkgray: #132030;
+  --color-bodytext: #F0F4F8bf;
+  --color-primary: #1E3A5F;        /* Azul marino oscuro (tronco/raíces) */
+  --color-secondary: #C8541A;      /* Naranja terracota */
+  --color-input: #e2e8f0;
+  --color-graymuted: #C8B89A;      /* Beige arena (hojas neutras) */
   /* --color-error-emphasis: #d5745b; */
   /* --color-warning-emphasis: #d9941a; */
   /* --color-success-emphasis: #10bd9d; */

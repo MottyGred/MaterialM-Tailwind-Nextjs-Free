@@ -1,39 +1,44 @@
-import SalesProfit from "../components/dashboard/SalesProfit";
-import TotalFollowers from "../components/dashboard/TotalFollowers";
-import TotalIncome from "../components/dashboard/TotalIncome";
-import PopularProducts from "../components/dashboard/PopularProducts";
-import EarningReports from "../components/dashboard/EarningReports";
-import BlogCards from "../components/dashboard/BlogCards";
+import KPICards from "../components/dashboard/KPICards";
+import VentasMensualesChart from "../components/dashboard/VentasMensualesChart";
+import EstadoOrdenesChart from "../components/dashboard/EstadoOrdenesChart";
+import ConversionVendedoresChart from "../components/dashboard/ConversionVendedoresChart";
+import OrdenesRecientes from "../components/dashboard/OrdenesRecientes";
+import AlertasPanel from "../components/dashboard/AlertasPanel";
 
-const page = () => {
+export default function DashboardPage() {
   return (
-    <>
-      <div className="grid grid-cols-12 gap-30">
-        <div className="lg:col-span-8 col-span-12">
-          <SalesProfit />
+    <div className="flex flex-col gap-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-dark dark:text-white">Dashboard Ejecutivo</h1>
+        <p className="text-sm text-darklink mt-1">Resumen operativo — Haladás Taller Creativo · Hoy, miércoles 9 de abril 2025</p>
+      </div>
+
+      {/* KPI Cards */}
+      <KPICards />
+
+      {/* Charts Row 1 */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-8">
+          <VentasMensualesChart />
         </div>
-        <div className="lg:col-span-4 col-span-12">
-          <div className="grid grid-cols-12 ">
-            <div className="col-span-12 mb-30">
-              <TotalFollowers />
-            </div>
-            <div className="col-span-12">
-              <TotalIncome />
-            </div>
-          </div>
-        </div>
-        <div className="lg:col-span-8 col-span-12">
-          <PopularProducts />
-        </div>
-        <div className="lg:col-span-4 col-span-12">
-          <EarningReports />
-        </div>
-        <div className="col-span-12">
-          <BlogCards />
+        <div className="col-span-12 lg:col-span-4">
+          <EstadoOrdenesChart />
         </div>
       </div>
-    </>
-  );
-};
 
-export default page;
+      {/* Charts Row 2 */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12 lg:col-span-8">
+          <ConversionVendedoresChart />
+        </div>
+        <div className="col-span-12 lg:col-span-4">
+          <AlertasPanel />
+        </div>
+      </div>
+
+      {/* Orders Table */}
+      <OrdenesRecientes />
+    </div>
+  );
+}
